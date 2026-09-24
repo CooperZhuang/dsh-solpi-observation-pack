@@ -1,0 +1,55 @@
+{
+  "name": "dsh-solpi-observation-pack",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ObservationPack for DeepSeek Harness: replace repeatedly-replayed large tool results with a stable handle plus a spill locator, using DSH's replayable surface replacement (inspired by NVIDIA SoL-Pi).",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "context-engineering",
+    "token-efficiency",
+    "observation-pack",
+    "sol-pi"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "dependencies": {
+    "@deepseek-ai/cosmokit": "^1.8.4",
+    "@deepseek-ai/schemastery": "^3.18.3"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-llm": ">=0.1.5-rc.1 <0.2.0"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh-llm": {
+      "optional": true
+    }
+  }
+}

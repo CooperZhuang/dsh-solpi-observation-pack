@@ -1,0 +1,9 @@
+# dsh-solpi-observation-pack bundle patch: mount the host-plane plugin row.
+# Installed via the profile bundle list (or `dsh plugin add dsh-solpi-observation-pack`).
+#
+# The plugin hooks the agent's per-step boundary (`agent/pre-step`) and rewrites
+# eligible large tool results into durable surface replacements, so the model
+# sees a stable handle while the human transcript keeps the original.
+- insert:
+    - id: solpi-observation-pack
+      name: dsh-solpi-observation-pack
