@@ -4,9 +4,10 @@ import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 
+// 占位 id（脱敏自真机会话）：只为演示 id → spill 目录名的映射关系
 const ids = [
-  'session-217fe16a-5beb-494c-8ea3-e6c147b4c0d0',
-  'session-b4475b97-15b5-49e4-a975-4f8b5f76d03b',
+  'session-11111111-2222-4333-8444-555555555555',
+  'session-aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
 ]
 for (const id of ids) {
   console.log(id, '->', 'session-' + createHash('sha256').update(id).digest('hex').slice(0, 12))
