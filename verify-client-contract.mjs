@@ -9,7 +9,8 @@
  * 本脚本把 `lib/client.js` 塞进**假的** `window.__ModuleLoader__` + **假的** React 里真跑一遍：
  *
  *   1) 模块注册成功，`inject` 里是 `configForms` 而不是已删除的 `settingsScope`；
- *   2) 按 entry id 取共享表单，并注册进 `settings.section`（id/order/label 不变）；
+ *   2) 按 entry id 取共享表单，并注册进插件页的 `plugins.bundle.config`（2026-09-25 起）
+ *      与设置页的 `settings.section`（id/order/label 不变）；
  *   3) 七个字段都渲染得出来（`React.useSyncExternalStore` 那条读路径没坏）；
  *   4) 改一个旋钮 → 保存 ⇒ 发 `{ op:'set', path, value }`；恢复默认 → 保存 ⇒ 发 `{ op:'unset', path }`，
  *      两者都带上读到的 `revision` 作为 fence。
@@ -100,12 +101,11 @@ check('2. inject 换成 configForms（不再依赖 settingsScope）', JSON.strin
 runtime.apply(ctx)
 check('3. 按 entry id 取共享表单', ctx.requestedId === 'solpi-observation-pack', String(ctx.requestedId))
 check(
-  '4. 注册进 settings.section（id/order/label 不变）',
+  '4. 只注册插件页那一处（plugins.bundle.config, key=包名）；设置页菜单已摘',
   registered.length === 1 &&
-    registered[0].spec.name === 'settings.section' &&
-    registered[0].spec.id === 'solpi-observation-pack' &&
-    registered[0].spec.order === 16 &&
-    registered[0].spec.label === '观测打包',
+    registered[0].spec.name === 'plugins.bundle.config' &&
+    registered[0].spec.key === 'dsh-solpi-observation-pack' &&
+    !registered.some((entry) => entry.spec.name === 'settings.section'),
   JSON.stringify(registered.map((entry) => entry.spec)),
 )
 check('5. 卡片是函数组件', typeof registered[0].component === 'function')
