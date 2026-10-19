@@ -138,7 +138,9 @@ cd C:\CodeRepository\dsh-solpi-observation-pack
 pnpm install
 ```
 
-依赖下限：`@deepseek-ai/schemastery` ≥ **3.18.3**（`.volatile()`）、`@deepseek-ai/cosmokit` ≥ **1.8.4**（`isVolatile`）。低于这个版本插件会在 import 期直接崩（`Schema.prototype.volatile is not a function`），别降版本。
+依赖下限（与 `package.json` 一致）：`@deepseek-ai/schemastery` **^3.18.5**（`.volatile()` 本身需要 ≥ 3.18.3）、`@deepseek-ai/cosmokit` **^1.8.6**（`isVolatile` 本身需要 ≥ 1.8.4）。低于这两个下限插件会在 import 期直接崩（`Schema.prototype.volatile is not a function`），别降版本。
+
+内核侧 peer 区间是 `@deepseek-ai/dsh-llm` **>=0.2.1-rc.2 <0.3.0**（本插件只用到它的 `freezeMessage`）。2026-10-20 已按 **DSH 0.2.1-rc.2** 核对过全部用到的内核 API：`isVolatile` / `freezeMessage` / `z.object().volatile()`、`ctx.get('spillStore')` 的 `saveText({owner, source, suggestedName, content})`、`agent/pre-step` 的 waterfall 载荷、`settings.configure({ auto: false }, fiber)`、`loader/volatile-update`、`session.surface.nodes` / `deriveEventMessage` / `append` 的 `surfaceOp:{op:'replace'}` 与 `assertToolResultRewrite` 契约、浏览器侧 `configForms.get(entryId)` 与 `slots.register` 的 `plugins.bundle.config` 槽——形状均未变。本插件**不用子代理**，所以 0.2.1-rc.2 的 `startActivation({provider, request})` 与 Agent Preset 约定与它无关。
 
 **另一种装法**（不经过 bundles，只往 `cordis.patch.yml` 插一行）：可以热加载、不用重启，但**不会出现在「插件列表」里**——DSH 的插件列表只列 bundles 里的包。两种装法二选一，别同时用。
 
